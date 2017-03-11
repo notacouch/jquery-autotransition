@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>jQuery.autoTransition.js</title>
+		<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+		<script src="../src/jquery.autoTransition.js"></script>
+		<style type="text/css">
+			#element {
+				position: relative; /* Some kind of positioning is required. */
+				border: 1px solid #bbb;
+				background-color: #ddd;
+				height: 100px;
+			}
+		</style>
+	</head>
+	<body>
+
+		Transition:
+		<ul>
+			<li><button id="top-200">top: 200px;</button></li>
+			<li><button id="top-auto">top: auto;</button></li>
+			<li><button id="left-200">left: 200px;</button></li>
+			<li><button id="left-auto">left: auto;</button></li>
+			<li><button id="width-200">width: 200px;</button></li>
+			<li><button id="width-auto">width: auto;</button></li>
+			<li><button id="height-200">height: 200px;</button></li>
+			<li><button id="height-auto">height: auto;</button></li>
+		</ul>
+		<div id="element"></div>
+
+		<script>
+			$( function() {
+				var $element = $('#element');
+				$(['top', 'left', 'width', 'height']).each(function(index, property){
+					$('#' + property + '-' + '200').on('click', function(){
+						$element.autoTransition({
+							property: property,
+							value: '200px'
+						});
+					});
+					$('#' + property + '-' + 'auto').on('click', function(){
+						$element.autoTransition({
+							property: property
+						});
+					});
+				});
+
+			} );
+		</script>
+	</body>
+</html>

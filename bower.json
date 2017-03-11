@@ -1,0 +1,25 @@
+{
+  "name": "jquery-autotransition",
+  "license": "MIT",
+  "authors": [
+    "Abed Islam <aislam1@northwell.edu>"
+  ],
+  "description": "CSS transition to/from auto for top, left, width, and height properties.",
+  "homepage": "http://jqueryboilerplate.com",
+  "keywords": [
+    "jquery",
+    "plugin",
+    "boilerplate",
+    "jquery-plugin",
+    "jquery-boilerplate"
+  ],
+  "main": "src/jquery.autoTransition.js",
+  "dependencies": {
+    "jquery": "1"
+  },
+  "ignore": [
+    "npm-debug.log",
+    "bower_components",
+    "node_modules"
+  ]
+}
