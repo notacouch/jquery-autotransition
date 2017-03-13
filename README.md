@@ -8,5 +8,5 @@ Options are `property` (either `'top'`, `'left'`, `'width'`, or `'height'`), `va
 E.g.
 
 ```JavaScript
-$('#element').autoTransition({ property: 'top', value: '200px', transition_affix: ' .2s ease-out'});
+$('#element').autoTransition({ property: 'top', value: '200px', transition_affix: ' .2s ease-out', callback: function(){ } });
 ```

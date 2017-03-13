@@ -16,6 +16,7 @@
 		// Create the defaults once
 		var pluginName = "autoTransition",
 			defaults = {
+				callback: null,
 				transition_affix: ' .5s ease-in-out',
 				value: 'auto'
 			};
@@ -63,6 +64,10 @@
 				var transition_affix = this.settings.transition_affix;
 				var transition_event = 'transitionend.autoTransition.' + property;
 				var cancel_event     = 'autoTransition.' + property + '.cancel';
+				var callback         = this.settings.callback;
+				if (typeof callback === 'function') {
+					this.settings.callback = null;
+				}
 
 				var transition_didnt_exist;
 				var transition_property_didnt_exist;
@@ -129,6 +134,9 @@
 							$el.trigger(cancel_event);
 							$el.css(property, value);
 							$el.off('transitionend.autoTransition.' + property);
+							if (typeof callback === 'function') {
+								callback();
+							}
 						}
 					});
 
@@ -160,6 +168,9 @@
 						if (event.originalEvent.propertyName === property) {
 							$el.trigger(cancel_event);
 							$el.off('transitionend.autoTransition.' + property);
+							if (typeof callback === 'function') {
+								callback();
+							}
 						}
 					});
 				}

@@ -26,6 +26,7 @@
 			<li><button id="width-auto">width: auto;</button></li>
 			<li><button id="height-200">height: 200px;</button></li>
 			<li><button id="height-auto">height: auto;</button></li>
+			<li><button id="width-height-400">width: 400px; then height: 400px;</button></li>
 		</ul>
 		<div id="element"></div>
 
@@ -43,6 +44,19 @@
 						$element.autoTransition({
 							property: property
 						});
+					});
+				});
+
+				$('#width-height-400').on('click', function(){
+					$element.autoTransition({
+						property: 'width',
+						value: '400px',
+						callback: function() {
+							$element.autoTransition({
+								property: 'height',
+								value: '400px'
+							});
+						}
 					});
 				});
 

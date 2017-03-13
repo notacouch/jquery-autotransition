@@ -80,14 +80,37 @@
 			{
 				property: "top",
 				value: "200px",
-				transition_affix: " .5s ease-in"
+				transition_affix: " .5s ease-in",
+				callback: null
 			},
 			"extend plugin settings"
 		);
 
 	} );
 
+	QUnit.test(
+		"executes callback",
+		function( assert ) {
+			var done       = assert.async();
 
+			setTimeout(function(){
+
+				assert.step('fixture autoTransition to `top: 400px` has started @ ' + (new Date()).toISOString() );
+				$fixture.autoTransition({
+					property: 'top',
+					value: '400px',
+					callback: function() {
+						assert.step('fixture autoTransition to `top: 400px` has completed @ ' + (new Date()).toISOString() );
+						assert.ok(true);
+						assert.step('fixture autoTransition resetting top and transition @ ' + (new Date()).toISOString() );
+						$fixture.css('top', '');
+						$fixture.css('transition', '');
+						done();
+					}
+				});
+			}, transition_duration + 10);
+		}
+	);
 
 	QUnit.test(
 		"existing CSS transition is used and not overridden ",
@@ -116,7 +139,7 @@
 					$fixture.css('transition', '');
 					done();
 				}, 310);
-			}, 510);
+			}, transition_duration * 2 + 20);
 		}
 	);
 
@@ -136,31 +159,29 @@
 					assert.step('fixture autoTransition starting transition `' + property + ': 200px` @ ' + (new Date()).toISOString() );
 					$fixture.autoTransition({
 						property: property,
-						value: '200px'
+						value: '200px',
+						callback: function () {
+							assert.step('fixture autoTransition to `' + property + ': 200px` has completed @ ' + (new Date()).toISOString() );
+							assert.equal(getOffset.call($fixture, property, auto), 200, "The actual offset of " + property + " should equal 200.");
+
+							assert.step('fixture autoTransition starting transition `' + property + ': "auto"` @ ' + (new Date()).toISOString() );
+							$fixture.autoTransition({
+								property: property,
+								value: 'auto',
+								callback: function () {
+									assert.step('fixture autoTransition to `' + property + ': "auto"` has completed @ ' + (new Date()).toISOString() );
+									assert.equal(getOffset.call($fixture, property), auto, "The actual offset of " + property + " should equal " + auto + ".");
+									done();
+								}
+							});
+						}
 					});
 
 					var test_offset = getOffset.call($fixture, property, auto);
 					//console.log('test_offset? ', test_offset);
 					assert.notEqual(test_offset, 200, "The actual offset of " + property + " should not equal 200 at the onset (means it is transitioning).");
 
-					setTimeout(function(){
-						assert.step('fixture autoTransition to `' + property + ': 200px` has completed @ ' + (new Date()).toISOString() );
-						assert.equal(getOffset.call($fixture, property, auto), 200, "The actual offset of " + property + " should equal 200.");
-
-						assert.step('fixture autoTransition starting transition `' + property + ': "auto"` @ ' + (new Date()).toISOString() );
-						$fixture.autoTransition({
-							property: property,
-							value: 'auto'
-						});
-
-						setTimeout( function() {
-							assert.step('fixture autoTransition to `' + property + ': "auto"` has completed @ ' + (new Date()).toISOString() );
-							assert.equal(getOffset.call($fixture, property), auto, "The actual offset of " + property + " should equal " + auto + ".");
-							done();
-						}, transition_duration + 10);
-
-					}, transition_duration + 10);
-				}, transition_duration * 2 * (index+2) + 40 );
+				}, (transition_duration * 3 + 30) + transition_duration * (index+2) + 40 );
 			}
 		);
 	});
