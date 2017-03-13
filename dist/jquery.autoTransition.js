@@ -1,6 +1,6 @@
 /*
  *  jquery-autotransition - v0.0.1
- *  CSS transition to/from auto for top, left, width, and height.
+ *  CSS transition to/from auto for top, left, width, and height properties.
  *  http://github.com/notaouch/jquery-autotransition
  *
  *  Made by Abed Islam

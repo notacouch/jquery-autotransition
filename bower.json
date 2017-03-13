@@ -5,7 +5,7 @@
     "Abed Islam <aislam1@northwell.edu>"
   ],
   "description": "CSS transition to/from auto for top, left, width, and height properties.",
-  "homepage": "http://jqueryboilerplate.com",
+  "homepage": "https://github.com/notacouch/jquery-autotransition",
   "keywords": [
     "jquery",
     "plugin",
