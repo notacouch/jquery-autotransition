@@ -36,6 +36,10 @@
 			this.init(options);
 		}
 
+		var computeTransition = function() {
+			return this.css('transition-property') + ' ' + this.css('transition-duration') + ' ' + this.css('transition-timing-function') + ' ' + this.css('transition-delay');
+		};
+
 		// Avoid Plugin.prototype conflicts
 		$.extend( Plugin.prototype, {
 			init: function(options) {
@@ -71,7 +75,8 @@
 				var transition_didnt_exist;
 				var transition_property_didnt_exist;
 				var set_transition = function() {
-					if ( ! $el.css('transition') || ($el.css('transition') === "all 0s ease 0s")) { // "all 0s ease 0s" is default.
+					//console.log('transition?	', computeTransition.call($el));
+					if ( ! computeTransition.call($el) || (computeTransition.call($el) === "all 0s ease 0s")) { // "all 0s ease 0s" is default.
 						$el.css('transition', property + transition_affix );
 						transition_didnt_exist          = true;
 						transition_property_didnt_exist = false;
@@ -87,6 +92,7 @@
 							transition_property_didnt_exist = false;
 						}
 					}
+					//console.log('tde, tpde ', transition_didnt_exist, transition_property_didnt_exist);
 				};
 				var unset_transition = function() {
 					if (transition_didnt_exist) {

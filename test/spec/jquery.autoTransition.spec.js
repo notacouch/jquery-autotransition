@@ -105,11 +105,11 @@
 					property: 'top',
 					value: '400px'
 				});
-				assert.equal(computeTransition.call($fixture), transition);
+				assert.equal(computeTransition.call($fixture), transition, 'transition should remain unaffected');
 
 				setTimeout(function(){
 					assert.step('fixture autoTransition to `top: 400px` has completed @ ' + (new Date()).toISOString() );
-					assert.equal(computeTransition.call($fixture), transition);
+					assert.equal(computeTransition.call($fixture), transition, 'transition should still remain unaffected');
 
 					assert.step('fixture autoTransition resetting top and transition @ ' + (new Date()).toISOString() );
 					$fixture.css('top', '');
