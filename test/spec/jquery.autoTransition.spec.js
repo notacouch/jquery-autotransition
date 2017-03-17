@@ -5,6 +5,7 @@
 	var $testCanvas         = $( "#testCanvas" );
 	var $fixture            = null;
 	var valid_properties    = ['top', 'left', 'width', 'height'];
+	var test_counter 		= 0;
 	var transition_duration = 500;
 	var offsetProp 			= function(property){ return 'offset' + property[0].toUpperCase() + property.slice(1); };
 	var getOffset    		= function(property, base) {
@@ -30,6 +31,7 @@
 
 	QUnit.module( "jQuery autoTransition", {
 		beforeEach: function() {
+			++test_counter;
 
 			if ( ! $fixture) {
 				// fixture is the element where your jQuery plugin will act
@@ -91,6 +93,8 @@
 	QUnit.test(
 		"executes callback",
 		function( assert ) {
+			// reset test counter as I use it hereon outwards
+			test_counter = 1;
 			var done       = assert.async();
 
 			setTimeout(function(){
@@ -139,7 +143,7 @@
 					$fixture.css('transition', '');
 					done();
 				}, 310);
-			}, transition_duration * 2 + 20);
+			}, transition_duration * test_counter + 10 * test_counter);
 		}
 	);
 
@@ -181,7 +185,7 @@
 					//console.log('test_offset? ', test_offset);
 					assert.notEqual(test_offset, 200, "The actual offset of " + property + " should not equal 200 at the onset (means it is transitioning).");
 
-				}, (transition_duration * 3 + 30) + transition_duration * (index+2) + 40 );
+				}, (transition_duration * test_counter + 10 * test_counter) + transition_duration + 10 );
 			}
 		);
 	});
