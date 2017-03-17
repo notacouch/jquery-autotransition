@@ -79,6 +79,7 @@
 
 				var transition_didnt_exist;
 				var transition_property_didnt_exist;
+				var transition_property_had_none = false;
 				var set_transition = function() {
 					//console.log('transition?	', computeTransition.call($el));
 					if ( ! computeTransition.call($el) || (computeTransition.call($el) === "all 0s ease 0s")) { // "all 0s ease 0s" is default.
@@ -90,9 +91,20 @@
 
 						// check transition-property
 						var transition_properties = $el.css('transition-property');
-						if ( transition_properties.replace(/\s/g,'').split(',').indexOf(property) === -1) {
+						var transition_properties_array = transition_properties.replace(/\s/g,'').split(',');
+
+						if ( ( transition_properties_array.indexOf(property) === -1) && (transition_properties_array.indexOf('all') === -1) ) { // Didn't want to write another test for this.
 							transition_property_didnt_exist = true;
-							$el.css('transition-property', transition_properties + ', ' + property);
+
+							var none_index = transition_properties_array.indexOf('none');
+
+							if (none_index !== -1) {
+								transition_property_had_none = true;
+								transition_properties_array.pop(none_index);
+								transition_properties = transition_properties_array.join(',');
+							}
+
+							$el.css('transition-property', transition_properties + ($.trim(transition_properties).length ? ', ' : '') + property);
 						} else {
 							transition_property_didnt_exist = false;
 						}
@@ -106,6 +118,9 @@
 						if (transition_property_didnt_exist) {
 							var transition_properties_array = $el.css('transition-property').replace(/\s/g,'').split(',');
 							transition_properties_array.pop(transition_properties_array.indexOf(property));
+							if (transition_property_had_none) {
+								transition_properties_array.unshift('none');
+							}
 							$el.css('transition-property', transition_properties_array.join(','));
 						}
 					}

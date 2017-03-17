@@ -147,8 +147,71 @@
 		}
 	);
 
+	QUnit.test(
+		"Supports 'all' transition-property ",
+		function( assert ) {
+			var done       = assert.async();
+			var transition = 'all 0.3s ease-out 0s';
+			setTimeout(function(){
 
-	valid_properties.forEach(function(property, index){
+
+				$fixture.css('transition', transition);
+				assert.step('fixture transition set to `' + transition + '` @ ' + (new Date()).toISOString() );
+
+				assert.step('fixture autoTransition to `top: 400px` has started @ ' + (new Date()).toISOString() );
+				$fixture.autoTransition({
+					property: 'top',
+					value: '400px',
+					callback: function(){
+						assert.step('fixture autoTransition to `top: 400px` has completed @ ' + (new Date()).toISOString() );
+						assert.equal(computeTransition.call($fixture), transition, 'transition should still remain unaffected');
+
+						assert.step('fixture autoTransition resetting top and transition @ ' + (new Date()).toISOString() );
+						$fixture.css('top', '');
+						$fixture.css('transition', '');
+						done();
+					}
+				});
+				assert.equal(computeTransition.call($fixture), transition, 'transition should remain unaffected');
+
+			}, transition_duration * test_counter + 10 * test_counter);
+		}
+	);
+
+	QUnit.test(
+		"Supports 'none' transition-property ",
+		function( assert ) {
+			var done       = assert.async();
+			var transition = 'none 0.3s ease-out 0s';
+			setTimeout(function(){
+
+
+				$fixture.css('transition', transition);
+				assert.step('fixture transition set to `' + transition + '` @ ' + (new Date()).toISOString() );
+
+				assert.step('fixture autoTransition to `top: 400px` has started @ ' + (new Date()).toISOString() );
+				$fixture.autoTransition({
+					property: 'top',
+					value: '400px',
+					callback: function(){
+						assert.step('fixture autoTransition to `top: 400px` has completed @ ' + (new Date()).toISOString() );
+						assert.equal(computeTransition.call($fixture), transition, 'transition should now be the same');
+
+						assert.step('fixture autoTransition resetting top and transition @ ' + (new Date()).toISOString() );
+						$fixture.css('top', '');
+						$fixture.css('transition', '');
+						done();
+					}
+				});
+				assert.notEqual(computeTransition.call($fixture), transition, 'transition should be different');
+
+			}, transition_duration * test_counter + 10 * test_counter);
+		}
+	);
+
+
+
+	valid_properties.forEach(function(property){
 		var offset_property = offsetProp(property);
 
 		QUnit.test(
